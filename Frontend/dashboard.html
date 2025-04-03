@@ -1,0 +1,307 @@
+<!-----DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard</title>
+</head>
+<body>
+    <h2>Subjects</h2>
+    <ul>
+        <li><a href="assignments.html?subject=Math">Math</a></li>
+        <li><a href="assignments.html?subject=Science">Science</a></li>
+        <li><a href="assignments.html?subject=English">English</a></li>
+    </ul>
+</body>
+</html------>
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            background-color: #f4f4f4;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background: #00796b;
+            color: white;
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar li {
+            padding: 12px;
+            margin: 10px 0;
+            background: red;
+            cursor: pointer;
+            text-align: center;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .sidebar li:hover {
+            background: #009688;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            margin-left: 270px;
+            padding: 20px;
+            flex: 1;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .courses, .assignments-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .course {
+            background: #00796b;
+            color: white;
+            padding: 15px;
+            margin: 10px 0;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        .course:hover {
+            background: #009688;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .buttons button {
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            background: #00796b;
+            color: white;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .buttons button:hover {
+            background: #009688;
+        }
+
+        /* File Upload */
+        .upload-box {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f9f9f9;
+            border: 2px dashed #00796b;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        .upload-box input {
+            display: none;
+        }
+
+        .upload-box label {
+            display: block;
+            padding: 10px;
+            background: #00796b;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .upload-box label:hover {
+            background: #009688;
+        }
+
+        .submit-message {
+            margin-top: 10px;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Student Dashboard</h2>
+        <ul>
+            <li onclick="showCourses()">My Courses</li>
+            <li onclick="showAssignments()">Assignments</li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h2 id="main-title">Welcome to the Student Dashboard</h2>
+
+        <!-- Course List -->
+        <div id="coursesSection" class="courses hidden">
+            <h3>Select a Course</h3>
+            <div class="course" onclick="openCourse('OOSE')">OOSE</div>
+            <div class="course" onclick="openCourse('ANN')">ANN</div>
+            <div class="course" onclick="openCourse('DL')">DL</div>
+            <div class="course" onclick="openCourse('CLAD')">CLAD</div>
+        </div>
+
+        <!-- Course Details & Assignments -->
+        <div id="courseDetails" class="assignments-section hidden">
+            <h2 id="courseTitle"></h2>
+            <button onclick="openAssignmentUpload()">View Assignments</button>
+        </div>
+
+        <!-- Assignment Upload Section -->
+        <div id="assignmentsSection" class="assignments-section hidden">
+            <h2>Upload Assignment</h2>
+            <div class="upload-box">
+                <input type="file" id="fileUpload">
+                <label for="fileUpload">Choose a file</label>
+            </div>
+            <button onclick="submitAssignment()">Submit</button>
+            <p id="submitMessage" class="submit-message hidden">Assignment Submitted Successfully ✅</p>
+        </div>
+    </div>
+
+    <script>
+
+        let loggedInStudent = null;
+
+
+        document.getElementById("loginForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            const name = document.getElementById("name").value.trim();
+            const studentID = document.getElementById("studentID").value.trim();
+
+            const response = await fetch("/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, studentID }),
+            });
+
+            const data = await response.json();
+            document.getElementById("message").innerText = data.message;
+
+            if (data.success) {
+                loggedInStudent = { name, studentID };
+                document.getElementById("uploadSection").style.display = "block";
+            }
+            alert("Login button clicked! Implement backend logic here.");
+        });
+
+        document.getElementById("uploadForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            if (!loggedInStudent) {
+                alert("Please log in first.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("assignment", document.getElementById("assignment").files[0]);
+            formData.append("name", loggedInStudent.name);
+            formData.append("studentID", loggedInStudent.studentID);
+
+            const response = await fetch("/upload", {
+                method: "POST",
+                body: formData,
+            });
+
+            const data = await response.json();
+            document.getElementById("uploadMessage").innerText = data.message;
+        });
+
+
+
+
+
+
+
+
+        
+
+        function showCourses() {
+            document.getElementById("main-title").innerText = "My Courses";
+            document.getElementById("coursesSection").classList.remove("hidden");
+            document.getElementById("courseDetails").classList.add("hidden");
+            document.getElementById("assignmentsSection").classList.add("hidden");
+        }
+
+        function showAssignments() {
+            document.getElementById("main-title").innerText = "Assignments";
+            document.getElementById("coursesSection").classList.add("hidden");
+            document.getElementById("courseDetails").classList.add("hidden");
+            document.getElementById("assignmentsSection").classList.add("hidden");
+            alert("Click on 'My Courses' to select a course first.");
+        }
+
+        function openCourse(courseName) {
+            document.getElementById("courseTitle").innerText = courseName + " - Assignments";
+            document.getElementById("coursesSection").classList.add("hidden");
+            document.getElementById("courseDetails").classList.remove("hidden");
+            document.getElementById("assignmentsSection").classList.add("hidden");
+        }
+
+        function openAssignmentUpload() {
+            document.getElementById("assignmentsSection").classList.remove("hidden");
+        }
+
+        function submitAssignment() {
+            let file = document.getElementById("fileUpload").files[0];
+            if (file) {
+                document.getElementById("submitMessage").classList.remove("hidden");
+                setTimeout(() => {
+                    alert("Assignment submitted: " + file.name);
+                }, 500);
+            } else {
+                alert("Please select a file first.");
+            }
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,201 @@
+
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>College Login</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #b71c1c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Main Container */
+        .login-container {
+            background: white;
+            display: flex;
+            width: 800px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Left Section - Role Selection */
+        .left-section {
+            flex: 1;
+            background: #ffe6e6;
+            padding: 30px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .left-section h1 {
+            color: #b71c1c;
+            margin-bottom: 20px;
+        }
+
+        .role-box {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .role-box:hover {
+            background: #f8d7da;
+        }
+
+        .role-box img {
+            width: 40px;
+            height: 40px;
+        }
+
+        /* Right Section - Login Form */
+        .right-section {
+            flex: 1;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .right-section img {
+            width: 100px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #b71c1c;
+            margin-bottom: 15px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="captcha"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .captcha-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .captcha-code {
+            background: #000;
+            color: white;
+            padding: 8px 12px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        /* Submit Button */
+        input[type="submit"] {
+            width: 100%;
+            background: #b71c1c;
+            color: white;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background: #d32f2f;
+        }
+
+        /* Footer Links */
+        .footer-links {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .footer-links a {
+            color: #b71c1c;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 850px) {
+            .login-container {
+                flex-direction: column;
+                width: 90%;
+            }
+
+            .left-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+        
+        <div class="left-section">
+            <h1>College Login</h1>
+            <div class="role-box">
+              <a href="stud.html">
+                <img src="student-icon.png" alt="Student">
+                <span>Student</span>
+              </a>
+            </div>
+            <div class="role-box">
+              <a href="teacher.html">
+             
+                <img src="teacher-icon.png" alt="Teacher">
+                <span>Teacher</span>
+              </a>
+            </div>
+        </div>
+
+        
+        <div class="right-section">
+            <img src="college-logo.png" alt="College Logo">
+            <h2>Login</h2>
+            <form action="/check" method="POST">
+                <input type="text" id="username" name="username" placeholder="Enter Username" required>
+                <input type="password" id="password" name="password" placeholder="Enter Password" required>
+
+                
+                <div class="captcha-box">
+                    <span class="captcha-code">4 1 5 4</span>
+                    <input type="text" id="captcha" name="captcha" placeholder="Enter CAPTCHA" required>
+                </div>
+
+                <input type="submit" value="LOGIN">
+            </form>
+
+            <div class="footer-links">
+                <a href="#">Reset Password</a> | <a href="#">Contact Support</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

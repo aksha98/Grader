@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="teachers.css">
+    <title>Teacher Portal</title>
+</head>
+<body>
+    <h2>Submitted Assignments</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>Name</th>
+                <th>Filename</th>
+                <th>Timestamp</th>
+                <th>Actions</th>
+                <th>Marks</th>
+            </tr>
+        </thead>
+        <tbody id="assignmentsTable"></tbody>
+    </table>
+
+    <script>
+        async function fetchAssignments() {
+            try {
+                const response = await fetch("http://localhost:3000/3.3teacher/uploads");
+                if (!response.ok) throw new Error("Error loading assignments");
+
+                const assignments = await response.json();
+                const tableBody = document.getElementById("assignmentsTable");
+                tableBody.innerHTML = "";
+
+                assignments.forEach(assignment => {
+                    const fileUrl = assignment.fileUrl ? assignment.fileUrl : "#";
+                    const filename = assignment.originalName ? assignment.originalName : "Unknown File";
+
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${assignment.studentID || "Unknown ID"}</td>
+                        <td>${assignment.name || "Unknown Name"}</td>
+                        <td>${filename}</td>
+                        <td>${assignment.timestamp}</td>
+                        <td>
+                            <a href="${fileUrl}" target="_blank">View</a> | 
+                            <a href="${fileUrl}" download>Download</a>
+                        </td>
+                        <td>
+                            <input type="number" id="marks-${assignment.studentID}" min="0" max="100"
+                                placeholder="Enter Marks" onblur="saveMarks('${assignment.studentID}')">
+                            <button onclick="saveMarks('${assignment.studentID}')">Save</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Error fetching assignments:", error);
+                document.getElementById("assignmentsTable").innerHTML = `<tr><td colspan="6">Error loading assignments</td></tr>`;
+            }
+        }
+
+        async function saveMarks(studentID) {
+            const marksInput = document.getElementById(`marks-${studentID}`).value.trim();
+            const marks = parseInt(marksInput, 10);  // Convert to integer
+
+            if (isNaN(marks) || marksInput === "") {
+                alert("❌ Please enter valid marks before saving.");
+                return;
+            }
+
+            try {
+                const response = await fetch("http://localhost:3000/3.3teacher/save-marks", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ studentID, marks })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert(`✅ Marks saved successfully for Student ID: ${studentID}`);
+                } else {
+                    alert(`❌ Error saving marks: ${result.message}`);
+                }
+            } catch (error) {
+                console.error("❌ Failed to save marks:", error);
+                alert("❌ Failed to save marks.");
+            }
+        }
+
+        fetchAssignments();
+    </script>
+</body>
+</html>
+
+
+
