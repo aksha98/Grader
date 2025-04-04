@@ -13,7 +13,7 @@
 
 3. **Backend Functionality**:
    - Handles data storage and processing of grades and submissions.
-   - Likely includes API endpoints for interaction with the frontend.
+   - Includes API endpoints for interaction with the frontend.
 
 4. **Submission Management**:
    - Facilitates submission of assignments by students.
@@ -33,13 +33,27 @@
 ### Additional Capabilities
 - **User Authentication**: Secure login for students and instructors.
 - **Responsive Design**: Ensures compatibility with various devices.
-- **Integration**: Possible integration with other educational tools or platforms.
+- **Integration**: Possible integration with other educational tools or platforms.</br>
 
-##Output:
-<img width="300" alt="image" src="https://github.com/user-attachments/assets/37d4e0a5-4206-481f-bd61-043ba72fe34b" />
-<img width="357" alt="image" src="https://github.com/user-attachments/assets/f7c530ce-f7e4-4b6d-a052-22fdb904ae20" />
-<img width="615" alt="image" src="https://github.com/user-attachments/assets/007defc4-79f6-43f6-8f64-ed31160d32b1" />
-<img width="595" alt="image" src="https://github.com/user-attachments/assets/ed356334-49c9-40cc-8eeb-61bbac7d1318" />
+## **Output:**
+
+
+
+<br><img width="300" alt="image" src="https://github.com/user-attachments/assets/37d4e0a5-4206-481f-bd61-043ba72fe34b" /></br>
+
+
+
+<br><img width="357" alt="image" src="https://github.com/user-attachments/assets/f7c530ce-f7e4-4b6d-a052-22fdb904ae20" /></br>
+
+
+
+<br><img width="615" alt="image" src="https://github.com/user-attachments/assets/007defc4-79f6-43f6-8f64-ed31160d32b1" /></br>
+
+
+
+<br>![WhatsApp Image 2025-04-04 at 10 00 54 AM](https://github.com/user-attachments/assets/558bd757-6606-4eda-b8e1-771f1cfda19a)</br>
+
+
 
 
 
