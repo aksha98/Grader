@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal</title>
+    <link rel="stylesheet" href="stud.css">
+
+
+
+    <a id="reportLink" href="#" target="_blank" style="display: none;">View Report</a>
+
+
+
+    
+</head>
+<body>
+    <h2>Student Login</h2>
+    <form id="loginForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" required><br><br>
+
+        <label for="studentID">Student ID:</label>
+        <input type="text" id="studentID" required><br><br>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <div id="uploadSection" style="display: none;">
+        <h3>Upload Assignment</h3>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" id="assignment" name="assignment" required><br><br>
+            <button type="submit">Upload</button>
+        </form>
+        <p id="uploadMessage"></p>
+    </div>
+
+    <p id="message"></p>
+
+    <script>
+        let loggedInStudent = null;
+
+        document.getElementById("loginForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            const name = document.getElementById("name").value.trim();
+            const studentID = document.getElementById("studentID").value.trim();
+
+            const response = await fetch("/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, studentID }),
+            });
+
+            const data = await response.json();
+            document.getElementById("message").innerText = data.message;
+
+            if (data.success) {
+                loggedInStudent = { name, studentID };
+                document.getElementById("uploadSection").style.display = "block";
+            }
+        });
+
+        document.getElementById("uploadForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            if (!loggedInStudent) {
+                alert("Please log in first.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("assignment", document.getElementById("assignment").files[0]);
+            formData.append("name", loggedInStudent.name);
+            formData.append("studentID", loggedInStudent.studentID);
+
+            const response = await fetch("/upload", {
+                method: "POST",
+                body: formData,
+            });
+
+            const data = await response.json();
+            document.getElementById("uploadMessage").innerText = data.message;
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!----DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal</title>
+    <link rel="stylesheet" href="stud.css">
+
+
+
+    <a id="reportLink" href="#" target="_blank" style="display: none;">View Report</a>
+
+
+
+    
+</head>
+<body>
+    <h2>Student Login</h2>
+    <form id="loginForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" required><br><br>
+
+        <label for="studentID">Student ID:</label>
+        <input type="text" id="studentID" required><br><br>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <div id="uploadSection" style="display: none;">
+        <h3>Upload Assignment</h3>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" id="assignment" name="assignment" required><br><br>
+            <button type="submit">Upload</button>
+        </form>
+        <p id="uploadMessage"></p>
+    </div>
+
+    <p id="message"></p>
+
+    <script>
+        let loggedInStudent = null;
+
+        document.getElementById("loginForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            const name = document.getElementById("name").value.trim();
+            const studentID = document.getElementById("studentID").value.trim();
+
+            const response = await fetch("/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, studentID }),
+            });
+
+            const data = await response.json();
+            document.getElementById("message").innerText = data.message;
+
+            if (data.success) {
+                loggedInStudent = { name, studentID };
+                document.getElementById("uploadSection").style.display = "block";
+            }
+        });
+
+        document.getElementById("uploadForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+    if (!loggedInStudent) {
+        alert("Please log in first.");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("assignment", document.getElementById("assignment").files[0]);
+    formData.append("name", loggedInStudent.name);
+    formData.append("studentID", loggedInStudent.studentID);
+
+    fetch("/uploads", { method: "POST", body: formData })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("uploadMessage").innerText = data.message;
+        if (data.pdfReport) {
+          document.getElementById("reportLink").href = `http://localhost:3000${data.pdfReport}`;
+          document.getElementById("reportLink").innerText = "View Report";
+          document.getElementById("reportLink").style.display = "block";
+        } else {
+          console.error("No report generated:", data);
+        }
+      })
+      .catch(error => console.error("Error:", error));
+});
+
+    </script>
+</body>
+</html-->
+
+
+
+
+
+
+
